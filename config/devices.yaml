@@ -1,0 +1,13 @@
+devices:
+  android_emulator:
+    platform_name: Android
+    automation_name: UiAutomator2
+    device_name: emulator-5554
+    app_package: com.raha.app.mymoney.free
+    app_activity: com.raha.app.mymoney.ui.activity.MainActivity
+    no_reset: true
+    new_command_timeout: 60
+
+server:
+  url: http://127.0.0.1
+  port: 4723

@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+venv/
+env/
+.venv/
+
+# Environment variables / secrets
+.env
+*.env
+
+# Appium / test artifacts
+reports/screenshots/
+reports/report_*.html
+*.png
+*.xml
+ui.xml
+
+# Generated test flows (optional — remove this line if you want generated YAMLs tracked)
+tests/flows/generated_*.yaml
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

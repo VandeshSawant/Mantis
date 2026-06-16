@@ -1,0 +1,6 @@
+requests
+Appium-Python-Client>=5.0.0
+PyYAML
+jinja2
+streamlit
+selenium

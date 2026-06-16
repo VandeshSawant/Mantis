@@ -1,0 +1,72 @@
+flow_name: Add Expense in the app
+description: Verifies a user can add an expense entry
+
+steps:
+  - action: launch_app
+    description: Launch the expense app
+
+  - action: wait
+    value: 2
+    description: Wait for home screen to load
+
+  - action: tap
+    description: Tap Add button to open new record screen
+    target:
+      by: accessibility
+      value: Add new record
+
+  - action: tap
+    description: Select Expense type
+    target:
+      by: xpath
+      value: //android.widget.CompoundButton[@resource-id='com.raha.app.mymoney.free:id/btn_2' and @text='EXPENSE']
+
+  - action: tap
+    description: Tap Account button to select account
+    target:
+      by: id
+      value: com.raha.app.mymoney.free:id/btn_from
+
+  - action: tap
+    description: Select Card as account
+    target:
+      by: text
+      value: Card
+
+  - action: tap
+    description: Tap Category button to select category
+    target:
+      by: id
+      value: com.raha.app.mymoney.free:id/btn_to
+
+  - action: tap
+    description: Select Food as expense category
+    target:
+      by: text
+      value: Food
+
+  - action: tap
+    description: Clear any existing amount
+    target:
+      by: id
+      value: com.raha.app.mymoney.free:id/btn_c
+
+  - action: tap_digit_sequence
+    description: Enter expense amount 1500
+    value: "1500"
+
+  - action: tap
+    description: Tap equals to confirm amount
+    target:
+      by: id
+      value: com.raha.app.mymoney.free:id/btn_equal
+
+  - action: tap
+    description: Save the expense entry
+    target:
+      by: id
+      value: com.raha.app.mymoney.free:id/btn_save
+
+  - action: wait
+    value: 2
+    description: Wait for home screen to return
