@@ -16,9 +16,9 @@ Mobile UI tests break constantly — a button's resource ID changes, a label get
 
 ## Features
 
-- **Plain English → executable test flow.** Describe a goal like *"add an expense of 750 for transport using cash account"* and an LLM converts it into a structured, reusable YAML test case — no manual locator-hunting required for the first draft.
+- **Plain English → executable test flow.** Describe a goal like _"add an expense of 750 for transport using cash account"_ and an LLM converts it into a structured, reusable YAML test case — no manual locator-hunting required for the first draft.
 - **Self-healing locators.** When a step fails because an element can't be found, Mantis captures the current screen's UI hierarchy, sends it to an LLM along with the original step's intent, and gets back a corrected locator. If the fix works, the YAML file is automatically rewritten — so the test gets more reliable every time it breaks, instead of staying broken until someone manually fixes it.
-- **Action-based YAML test format.** Every test is a deterministic, human-readable, version-controllable YAML file. The LLM is only used to *author* or *repair* tests — it is never in the loop during actual execution, so test runs are fast, repeatable, and don't depend on non-deterministic model output once a flow exists.
+- **Action-based YAML test format.** Every test is a deterministic, human-readable, version-controllable YAML file. The LLM is only used to _author_ or _repair_ tests — it is never in the loop during actual execution, so test runs are fast, repeatable, and don't depend on non-deterministic model output once a flow exists.
 - **Visual HTML reports.** Every run produces a self-contained HTML report with a pass/fail summary, per-step results, and embedded screenshots (click to enlarge) for every single action taken.
 
 ---
@@ -90,6 +90,7 @@ mantis/
 ## Setup
 
 ### Prerequisites
+
 - Python 3.9+
 - [Appium server](https://appium.io/) running locally
 - An Android emulator (or real device) with your target app installed
@@ -98,7 +99,7 @@ mantis/
 ### Install
 
 ```bash
-git clone https://github.com/<your-username>/mantis.git
+git clone https://github.com/VandeshSawant/Mantis.git
 cd mantis
 pip install -r requirements.txt
 ```
@@ -106,6 +107,7 @@ pip install -r requirements.txt
 ### Configure
 
 1. Set your Gemini API key:
+
    ```bash
    # Windows (PowerShell)
    $env:GEMINI_API_KEY="your-key-here"
@@ -126,11 +128,13 @@ pip install -r requirements.txt
 ## Usage
 
 **Run existing test flows:**
+
 ```bash
 python main.py
 ```
 
 **Generate and run a new flow from plain English:**
+
 ```bash
 python main.py "Add an expense of 500 for groceries using the cash account"
 ```
@@ -146,20 +150,21 @@ Open the generated `reports/report_<run_id>.html` file in any browser.
 
 Each flow is a YAML file with a list of steps. Supported actions:
 
-| Action | Description |
-|---|---|
-| `launch_app` | Launches the configured app |
-| `wait` | Pauses for N seconds |
-| `tap` | Finds an element and taps it |
-| `type` | Finds a field and types text into it |
-| `tap_digit_sequence` | Taps numeric keypad buttons in sequence (for apps using custom calculator-style input instead of a system keyboard) |
-| `swipe_up` | Performs a vertical swipe |
-| `verify_text` | Asserts an element's text matches an expected value |
-| `verify_element_exists` | Asserts an element is present on screen |
+| Action                  | Description                                                                                                         |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `launch_app`            | Launches the configured app                                                                                         |
+| `wait`                  | Pauses for N seconds                                                                                                |
+| `tap`                   | Finds an element and taps it                                                                                        |
+| `type`                  | Finds a field and types text into it                                                                                |
+| `tap_digit_sequence`    | Taps numeric keypad buttons in sequence (for apps using custom calculator-style input instead of a system keyboard) |
+| `swipe_up`              | Performs a vertical swipe                                                                                           |
+| `verify_text`           | Asserts an element's text matches an expected value                                                                 |
+| `verify_element_exists` | Asserts an element is present on screen                                                                             |
 
 Locator types (`by` field): `id`, `text`, `accessibility`, `xpath`.
 
 Example:
+
 ```yaml
 flow_name: Add Income in the app
 description: Verifies a user can add an income entry
@@ -195,7 +200,7 @@ steps:
 
 ## Design notes
 
-The LLM is intentionally kept **out of the execution path**. It's used only to *author* a test (convert English → YAML) or to *repair* a broken locator at the moment of failure — never to drive the test run itself. This keeps runs fast, deterministic, and inspectable: every test is a plain YAML file you can read, edit, and diff in version control, regardless of how it was created.
+The LLM is intentionally kept **out of the execution path**. It's used only to _author_ a test (convert English → YAML) or to _repair_ a broken locator at the moment of failure — never to drive the test run itself. This keeps runs fast, deterministic, and inspectable: every test is a plain YAML file you can read, edit, and diff in version control, regardless of how it was created.
 
 ---
 
