@@ -1,0 +1,75 @@
+app:
+  name: My Money
+  description: An expense and income tracking app
+  package_ref: android_emulator # references the matching key in config/devices.yaml
+
+behavioral_notes:
+  - Numeric input (amounts) uses a custom in-app calculator keypad, not the system keyboard. Use the tap_digit_sequence action, never type, for entering amounts.
+  - The INCOME/EXPENSE/TRANSFER toggle buttons reuse the same resource-ids (btn_1, btn_2, btn_3) as the calculator digit buttons 1, 2, 3. These must be disambiguated using xpath with the text attribute, not bare id.
+
+screens:
+  - name: home_screen
+    description: Main landing screen showing balance and transaction list
+    elements:
+      - key: add_record_button
+        description: Floating action button that opens the new transaction screen
+        by: accessibility
+        value: Add new record
+
+  - name: add_record_screen
+    description: Screen for creating a new income, expense, or transfer entry
+    elements:
+      - key: income_toggle
+        description: Selects "income" as the transaction type
+        by: xpath
+        value: "//android.widget.CompoundButton[@resource-id='com.raha.app.mymoney.free:id/btn_1' and @text='INCOME']"
+
+      - key: expense_toggle
+        description: Selects "expense" as the transaction type
+        by: xpath
+        value: "//android.widget.CompoundButton[@resource-id='com.raha.app.mymoney.free:id/btn_2' and @text='EXPENSE']"
+
+      - key: account_button
+        description: Opens the account picker (e.g. Cash, Card)
+        by: id
+        value: "com.raha.app.mymoney.free:id/btn_from"
+
+      - key: category_button
+        description: Opens the category picker (e.g. Salary, Awards, Food)
+        by: id
+        value: "com.raha.app.mymoney.free:id/btn_to"
+
+      - key: note_field
+        description: Free text notes field for the transaction
+        by: id
+        value: "com.raha.app.mymoney.free:id/et_note"
+
+      - key: amount_display
+        description: Read-only display showing the amount currently typed on the keypad
+        by: id
+        value: "com.raha.app.mymoney.free:id/tv_display"
+
+      - key: clear_amount_button
+        description: Clears the currently entered amount on the keypad
+        by: id
+        value: "com.raha.app.mymoney.free:id/btn_c"
+
+      - key: equals_button
+        description: Confirms the entered amount on the keypad
+        by: id
+        value: "com.raha.app.mymoney.free:id/btn_equal"
+
+      - key: save_button
+        description: Saves the current transaction entry
+        by: id
+        value: "com.raha.app.mymoney.free:id/btn_save"
+
+      - key: cancel_button
+        description: Cancels and discards the current transaction entry
+        by: id
+        value: "com.raha.app.mymoney.free:id/btn_cancel"
+
+      - key: date_field
+        description: Shows and lets the user change the transaction date
+        by: id
+        value: "com.raha.app.mymoney.free:id/tv_date"

@@ -1,0 +1,93 @@
+flow_name: add_expense_300_food
+description: Add a cash expense of 300 for Food on June 13
+steps:
+  - action: launch_app
+    description: Open the My Money app
+  - action: tap
+    description: Tap the Add New Record button
+    target:
+      by: accessibility
+      value: Add new record
+  - action: wait
+    description: Wait for the add record screen to load
+    value: 2
+  - action: tap
+    description: Select Expense transaction type
+    target:
+      by: xpath
+      value: //android.widget.CompoundButton[@resource-id='com.raha.app.mymoney.free:id/btn_2' and @text='EXPENSE']
+  - action: tap
+    description: Tap the account selection button
+    target:
+      by: id
+      value: com.raha.app.mymoney.free:id/btn_from
+  - action: wait
+    description: Wait for account picker to open
+    value: 1
+  - action: tap
+    description: Select Cash account
+    target:
+      by: text
+      value: Cash
+  - action: wait
+    description: Wait after selecting account
+    value: 1
+  - action: tap
+    description: Tap the category selection button
+    target:
+      by: id
+      value: com.raha.app.mymoney.free:id/btn_to
+  - action: wait
+    description: Wait for category picker to open
+    value: 1
+  - action: tap
+    description: Select Food category
+    target:
+      by: text
+      value: Food
+  - action: wait
+    description: Wait after selecting category
+    value: 1
+  - action: tap
+    description: Tap on the date field to open date picker
+    target:
+      by: id
+      value: com.raha.app.mymoney.free:id/tv_date
+  - action: wait
+    description: Wait for date picker to open
+    value: 1
+  - action: tap
+    description: Select day 13 on the calendar
+    target:
+      by: text
+      value: "13"
+  - action: tap
+    description: Confirm date selection
+    target:
+      by: text
+      value: OK
+  - action: wait
+    description: Wait for date picker to close
+    value: 1
+  - action: tap_digit_sequence
+    description: Enter amount 300 using the keypad
+    value: "300"
+  - action: tap
+    description: Tap the equals button to confirm amount
+    target:
+      by: id
+      value: com.raha.app.mymoney.free:id/btn_equal
+  - action: tap
+    description: Tap the save button to record the expense
+    target:
+      by: id
+      value: com.raha.app.mymoney.free:id/btn_save
+  - action: wait
+    description: Wait for transaction to save and return to main screen
+    value: 2
+  - action: verify_text
+    description: Verify that the Food transaction appears on the main screen
+    target:
+      by: text
+      value: Food
+    expected: Food

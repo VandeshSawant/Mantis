@@ -2,14 +2,18 @@ import os
 import json
 import requests
 
-GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent"
+from core.app_profile import AppProfile
 
-HEALER_SYSTEM_PROMPT = """You are a self-healing locator assistant for a mobile UI test automation framework (Appium).
+GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent"
+
+# Generic engine behavior — applies to ANY app.
+HEALER_ENGINE_RULES = """You are a self-healing locator assistant for a mobile UI test automation framework (Appium).
 
 A test step just FAILED because its locator did not match any element on the current screen.
 You will be given:
 1. The original step's intent (description + the locator that failed)
-2. The current screen's UI hierarchy (XML dump)
+2. Any known behavioral notes about this app
+3. The current screen's UI hierarchy (XML dump)
 
 Your job: find the element in the XML that most likely matches the step's intent, and return a NEW locator for it.
 
@@ -34,15 +38,22 @@ If you cannot find any reasonable match in the XML, return:
 - Prefer "id" (resource-id) if the element has one — most reliable
 - Use "text" for exact visible text match
 - Use "accessibility" for content-desc
-- Use "xpath" only if you need to combine attributes to uniquely identify the element (e.g. same resource-id used by multiple elements, like calculator digit buttons reused for category toggles)
+- Use "xpath" only if you need to combine attributes to uniquely identify the element (e.g. same resource-id used by multiple elements)
 """
 
 
 class SelfHealer:
-    def __init__(self, api_key=None):
+    def __init__(self, api_key=None, profile_path="config/app_profile.yaml"):
         self.api_key = api_key or os.environ.get("GEMINI_API_KEY")
         if not self.api_key:
             raise ValueError("GEMINI_API_KEY not set.")
+        self.profile = AppProfile(profile_path)
+
+    def _render_behavioral_notes(self):
+        notes = self.profile.behavioral_notes
+        if not notes:
+            return "(none recorded)"
+        return "\n".join(f"- {note}" for note in notes)
 
     def heal(self, step, page_source):
         """
@@ -53,12 +64,14 @@ class SelfHealer:
         original_target = step.get("target", {})
         action = step.get("action", "")
 
-        # Truncate page source if huge, to keep token usage sane
         max_chars = 12000
         if len(page_source) > max_chars:
             page_source = page_source[:max_chars] + "\n...[truncated]"
 
-        prompt = f"""{HEALER_SYSTEM_PROMPT}
+        prompt = f"""{HEALER_ENGINE_RULES}
+
+## App Behavioral Notes
+{self._render_behavioral_notes()}
 
 ## Failed Step
 Action: {action}
@@ -84,7 +97,6 @@ Original locator that failed: by={original_target.get('by')}, value={original_ta
         except (KeyError, IndexError):
             return {"found": False, "by": None, "value": None, "reasoning": "Healer response malformed"}
 
-        # Strip markdown fences if present
         if raw_text.startswith("```"):
             raw_text = raw_text.split("```")[1]
             if raw_text.startswith("json"):

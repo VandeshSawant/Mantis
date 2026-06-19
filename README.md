@@ -188,6 +188,48 @@ steps:
 
 ---
 
+# Actions
+
+Each file in this folder defines one action that can be used in a test flow's `action` field.
+
+## Adding a new action
+
+1. Create a new file here named after your action, e.g. `long_press.py`.
+2. Define a single function: `def run(runner, step):`
+   - `runner` — the `TestRunner` instance. Useful members: `runner.driver` (Appium driver), `runner.find_element(by, value)`, `runner.config` (loaded `devices.yaml`), `runner.device_key`.
+   - `step` — the current step's dict from the YAML flow (`action`, `description`, `target`, `value`, `expected`, etc., depending on what your action needs).
+3. Return `True` on success. Raise an exception (e.g. `AssertionError`, or let a `NoSuchElementException` propagate) on failure — the runner's existing retry/self-healing logic handles exceptions for you, you don't need to implement that yourself.
+4. That's it — no other files need to change. The action is auto-discovered by filename and immediately usable in any YAML flow.
+
+## Example
+
+```python
+# core/actions/long_press.py
+"""
+Action: long_press
+Long-presses an element for a given duration.
+
+Step fields used:
+  target.by / target.value - locator
+  value - press duration in ms (optional, default 1000)
+"""
+from appium.webdriver.common.touch_action import TouchAction
+
+def run(runner, step):
+    target = step.get("target", {})
+    duration = int(step.get("value", 1000))
+    element = runner.find_element(target["by"], target["value"])
+    TouchAction(runner.driver).long_press(element, duration=duration).perform()
+    return True
+```
+
+## Notes
+
+- Keep actions free of app-specific facts (e.g. don't hardcode a package name or resource-id directly — read package name from `runner.config`, and keep element locators in `config/app_profile.yaml`, not here).
+- Self-healing only attempts to recover `tap`, `type`, `verify_text`, and `verify_element_exists` failures today (see `runner.py`). If your new action wraps element-finding in a way the healer should also be able to recover, mention it when integrating — this may need a small addition to the healing dispatch list.
+
+---
+
 ## Roadmap
 
 - [ ] Run history storage (SQLite) for tracking pass-rate trends over time

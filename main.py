@@ -42,7 +42,7 @@ if __name__ == "__main__":
         ))
     else:
         # Default: run saved flows
-        summaries.append(run_flow_from_file("tests/flows/add_income.yaml"))
+        summaries.append(run_flow_from_file("tests/flows/add_expense_with_date.yaml"))
         # summaries.append(run_flow_from_file("tests/flows/add_expense.yaml"))
 
     generate_report(summaries)
