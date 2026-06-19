@@ -1,69 +1,70 @@
 flow_name: Add Income in the app
 description: Verifies a user can add an income entry
 steps:
-- action: launch_app
-  description: Launch the expense app
-- action: wait
-  value: 2
-  description: Wait for home screen to load
-- action: tap
-  description: Tap Add button to open new record screen
-  target:
-    by: accessibility
-    value: Add new record
-- action: wait
-  value: 1
-  description: Wait for add record screen to load
-- action: tap
-  description: Select Income type
-  target:
-    by: xpath
-    value: //android.widget.CompoundButton[@resource-id='com.raha.app.mymoney.free:id/btn_1'
-      and @text='INCOME']
-- action: tap
-  description: Tap Account button to select account
-  target:
-    by: id
-    value: com.raha.app.mymoney.free:id/btn_from
-- action: wait
-  value: 1
-  description: Wait for account picker to load
-- action: tap
-  description: Select Card as account
-  target:
-    by: text
-    value: Card
-- action: tap
-  description: Tap Category button to select category
-  target:
-    by: id
-    value: com.raha.app.mymoney.free:id/btn_to
-- action: wait
-  value: 1
-  description: Wait for category picker to load
-- action: tap
-  description: Select Awards as category
-  target:
-    by: text
-    value: Awards
-- action: tap
-  description: Clear any existing amount
-  target:
-    by: id
-    value: com.raha.app.mymoney.free:id/btn_c
-- action: tap_digit_sequence
-  description: Enter income amount 5000
-  value: '5000'
-- action: tap
-  description: Tap equals to confirm amount
-  target:
-    by: id
-    value: com.raha.app.mymoney.free:id/btn_equal
-- action: tap
-  description: Save the income entry
-  target:
-    by: id
-    value: com.raha.app.mymoney.free:id/btn_save
-- action: wait
-  value: 2
-  description: Wait for home screen to return
+  - action: launch_app
+    description: Launch the expense app
+  - action: wait
+    value: 2
+    description: Wait for home screen to load
+  - action: tap
+    description: Tap Add button to open new record screen
+    target:
+      by: accessibility
+      value: Add new record
+  - action: wait
+    value: 1
+    description: Wait for add record screen to load
+  - action: tap
+    description: Select Income type
+    target:
+      by: xpath
+      value:
+        //android.widget.CompoundButton[@resource-id='com.raha.app.mymoney.free:id/btn_1'
+        and @text='INCOME']
+  - action: tap
+    description: Tap Account button to select account
+    target:
+      by: id
+      value: com.raha.app.mymoney.free:id/btn_from
+  - action: wait
+    value: 1
+    description: Wait for account picker to load
+  - action: tap
+    description: Select Card as account
+    target:
+      by: text
+      value: Cadr
+  - action: tap
+    description: Tap Category button to select category
+    target:
+      by: id
+      value: com.raha.app.mymoney.free:id/btn_to
+  - action: wait
+    value: 1
+    description: Wait for category picker to load
+  - action: tap
+    description: Select Awards as category
+    target:
+      by: text
+      value: Awards
+  - action: tap
+    description: Clear any existing amount
+    target:
+      by: id
+      value: com.raha.app.mymoney.free:id/btn_c
+  - action: tap_digit_sequence
+    description: Enter income amount 5000
+    value: "5000"
+  - action: tap
+    description: Tap equals to confirm amount
+    target:
+      by: id
+      value: com.raha.app.mymoney.free:id/btn_eql
+  - action: tap
+    description: Save the income entry
+    target:
+      by: id
+      value: com.raha.app.mymoney.free:id/btn_save
+  - action: wait
+    value: 2
+    description: Wait for home screen to return

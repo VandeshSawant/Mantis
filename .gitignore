@@ -18,6 +18,7 @@ reports/report_*.html
 *.png
 *.xml
 ui.xml
+storage/mantis.db
 
 # Generated test flows (optional — remove this line if you want generated YAMLs tracked)
 tests/flows/generated_*.yaml

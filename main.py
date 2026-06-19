@@ -3,6 +3,7 @@ import yaml
 from core.runner import TestRunner
 from core.parser import FlowParser
 from reports.generator import generate_report
+from storage.db import save_run
 
 def run_flow_from_file(flow_path, device="android_emulator"):
     with open(flow_path, "r") as f:
@@ -28,21 +29,24 @@ def run_flow(flow, device="android_emulator", flow_path=None):
         flow_description=flow.get("description"),
     )
     summary["flow_name"] = flow["flow_name"]
+
+    # Persist this run to history (SQLite). Purely additive — does not
+    # affect execution or the HTML report.
+    save_run(summary, flow_name=flow.get("flow_name"), flow_description=flow.get("description"))
+
     return summary
 
 if __name__ == "__main__":
     summaries = []
 
     if len(sys.argv) > 1:
-        # Plain English mode: python main.py "add an expense of 200 for groceries"
         goal = " ".join(sys.argv[1:])
         summaries.append(run_flow_from_goal(
             goal,
             save_path=f"tests/flows/generated_{abs(hash(goal)) % 10000}.yaml"
         ))
     else:
-        # Default: run saved flows
-        summaries.append(run_flow_from_file("tests/flows/add_expense_with_date.yaml"))
-        # summaries.append(run_flow_from_file("tests/flows/add_expense.yaml"))
+        summaries.append(run_flow_from_file("tests/flows/add_income.yaml"))
+        summaries.append(run_flow_from_file("tests/flows/add_expense.yaml"))
 
     generate_report(summaries)
